@@ -12,7 +12,7 @@ resource "null_resource" "keycloak-operator_install" {
   }
   provisioner "local-exec" {
     when    = destroy
-    command = "kubectl delete -f templates/keycloak-operator.yaml >/dev/null 2&>1"
+    command = "exit 0"
   }
   depends_on = [
     null_resource.kubeconfig_update,
