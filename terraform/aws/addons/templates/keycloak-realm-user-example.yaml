@@ -1,0 +1,53 @@
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: kubernetes
+  namespace: keycloak-operator
+  labels:
+    app: keycloak
+spec:
+  realm:
+    id: kubernetes
+    realm: kubernetes
+    enabled: True
+    displayName: "Kubernetes Realm"
+    eventsListeners:
+      - "metrics-listener"
+    clients:
+      - clientId: argocd
+        protocol: openid-connect
+        publicClient: false
+        serviceAccountsEnabled: false
+        surrogateAuthRequired: false
+        redirectUris:
+          - https://argocd.olm-voatsap.shalb.org/auth/callback
+        rootUrl: https://argocd.olm-voatsap.shalb.org
+        baseUrl: /applications
+        clientAuthenticatorType: client-secret
+        secret: "somesecret"
+    users:
+      - username: "realm_admin"
+        firstName: "Cluster"
+        lastName: "Admin"
+        email: "voa@shalb.com"
+        enabled: True
+        emailVerified: False
+        credentials:
+        - type: "password"
+          value: "12345"
+        realmRoles:
+          - "offline_access"
+          - "uma_authorization"
+        clientRoles:
+          account:
+            - "manage-account"
+            - "view-profile"
+          realm-management:
+            - "manage-users"
+            - "view-users"
+            - "query-users"
+            - "create-client"
+  instanceSelector:
+    matchLabels:
+      app: keycloak

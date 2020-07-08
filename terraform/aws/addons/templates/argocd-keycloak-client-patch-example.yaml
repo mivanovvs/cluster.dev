@@ -1,0 +1,3 @@
+# kubectl patch secret argocd-secret -n argocd  --patch "$(cat templates/argocd-keycloak-client-patch-example.yaml)"
+data:
+  oidc.keycloak.clientSecret: # echo 'keycloakClientSecret' | base64
